@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -45,17 +43,34 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyDm0IdHFc_KiT4f2SUzCCLnOsIj1hKzdN4',
+          authDomain: 'wizard-house-war.firebaseapp.com',
+          projectId: 'wizard-house-war',
+          storageBucket: 'wizard-house-war.appspot.com',
+          messagingSenderId: '245657858057',
+          appId: '1:245657858057:web:0d179ac8d105862d6408d8'
+        },
+        services: {
+          auth: true,
+          firestore: true // Just as example. Can be any other service.
+        }
+      }
+    ]
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/stylesheets/variables.scss'],
     theme: {
-      dark: false,
+      dark: true,
       themes: {
-        light: {
+        dark: {
           primary: {
-            base: '#91C354',
+            base: '#9B20F0',
             lighten1: '#96BCFF',
             lighten2: '#E5EEFF'
           },
@@ -65,15 +80,6 @@ export default {
           info: '#2196F3',
           success: '#4CAF50',
           warning: '#FFC107'
-        },
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
         }
       }
     }

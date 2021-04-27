@@ -11,22 +11,22 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
+    "@nuxtjs/firebase": "^7.5.0",
     "core-js": "^3.9.1",
+    "firebase": "^8.4.2",
     "nuxt": "^2.15.3",
-    "vee-validate": "^3.4.5",
-    "firebase": "^8.3.2",
-    "@nuxtjs/firebase": "^7.5.0"
+    "vee-validate": "^3.4.5"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/style-resources": "^1.0.0",
     "@nuxtjs/vuetify": "^1.11.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.22.0",
     "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-vue": "^7.7.0",
-    "@nuxtjs/style-resources": "^1.0.0"
+    "eslint-plugin-vue": "^7.7.0"
   }
 }
