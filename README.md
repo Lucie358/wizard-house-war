@@ -1,4 +1,8 @@
-# wizard-house-war
+# Wizard House War
+
+Un site crée dans le cadre d'un jeu de rôle Harry Potter, afin de compter les points par maison obtenus et les retrouver au fil des parties. 
+A l'aide d'un compte, le Maître de jeu peut retrouver ses parties en cours si il en a plusieurs, et chaque partie comporte 7 années.
+Il peut ensuite décider d'attribuer 50 points a Serdaigle s'il le souhaite, ou au contraire en retirer... 
 
 ## Build Setup
 
