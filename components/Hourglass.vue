@@ -1,14 +1,17 @@
 <template>
   <div id="hourglass" :style="{ '--sandColor': color }" class="ready">
     <div class="glass">
-      <div class="sand top" :style="{height: percent+'%'}" />
+      <div class="sand top" :style="{height: (100 - getPercent)+'%'}" />
     </div>
     <div class="glass bottom">
-      <div class="sand bottom" :style="{height: (100 - percent)+'%'}" />
+      <div class="sand bottom" :style="{height: getPercent+'%'}" />
     </div>
+    <p class="text-center">
+      {{ points }}
+    </p>
     <div class="text-center mt-2">
       <v-menu
-        v-model="menu"
+        v-model="addInput"
         :close-on-content-click="false"
         :nudge-width="200"
         offset-y
@@ -25,12 +28,15 @@
         </template>
 
         <v-text-field
-          v-model="percent"
+          v-model.number="pointsToAdd"
+          :append-outer-icon="addInput ? 'mdi-send' : ''"
           label="Ajouter des points"
+          autofocus
+          @click:append-outer="addPoints"
         />
       </v-menu>
       <v-menu
-        v-model="menu"
+        v-model="removeInput"
         :close-on-content-click="false"
         :nudge-width="200"
         offset-y
@@ -47,8 +53,11 @@
         </template>
 
         <v-text-field
-          v-model="percent"
+          v-model.number="pointsToRemove"
+          :append-outer-icon="removeInput ? 'mdi-send' : ''"
           label="Enlever des points"
+          autofocus
+          @click:append-outer="removePoints"
         />
       </v-menu>
     </div>
@@ -64,9 +73,31 @@ export default Vue.extend({
     color: { type: String, default: '' }
   },
   data: () => ({
-    percent: 100
+    addInput: false,
+    removeInput: false,
+    points: 100,
+    maxPoints: 1500,
+    pointsToAdd: 10,
+    pointsToRemove: 10
 
-  })
+  }),
+  computed: {
+    getPercent () : Number {
+      return this.points / this.maxPoints * 100
+    }
+  },
+  methods: {
+    addPoints () {
+      this.points = this.points + this.pointsToAdd
+      this.addInput = false
+      this.pointsToAdd = 0
+    },
+    removePoints () {
+      this.points = this.points - this.pointsToRemove
+      this.removeInput = false
+      this.pointsToRemove = 0
+    }
+  }
 
 })
 
