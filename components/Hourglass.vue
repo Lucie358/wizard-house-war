@@ -70,12 +70,13 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'Hourglass',
   props: {
-    color: { type: String, default: '' }
+    color: { type: String, default: '' },
+    points: { type: Number, default: 0 }
+
   },
   data: () => ({
     addInput: false,
     removeInput: false,
-    points: 100,
     maxPoints: 1500,
     pointsToAdd: 10,
     pointsToRemove: 10
@@ -88,12 +89,10 @@ export default Vue.extend({
   },
   methods: {
     addPoints () {
-      this.points = this.points + this.pointsToAdd
       this.addInput = false
       this.pointsToAdd = 0
     },
     removePoints () {
-      this.points = this.points - this.pointsToRemove
       this.removeInput = false
       this.pointsToRemove = 0
     }
