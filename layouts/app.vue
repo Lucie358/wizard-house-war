@@ -76,6 +76,7 @@
               size="50"
               v-bind="attrs"
               v-on="on"
+              @click="redirect('games')"
             >
               <img
                 src="../assets/images/icons/crystal-ball.svg"
@@ -92,7 +93,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { orderBy } from 'lodash'
 
 export default Vue.extend({
   name: 'AppLayout',
@@ -133,6 +133,16 @@ export default Vue.extend({
     },
     left (val) {
       this.right = !val
+    }
+  },
+  mounted () {
+    if (!this.$store.state.game.years) {
+      this.$router.push('/games')
+    }
+  },
+  methods: {
+    redirect (route: string) {
+      this.$router.push(route)
     }
   }
 })

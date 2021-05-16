@@ -17,12 +17,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Context } from '@nuxt/types'
 import Hourglass from '~/components/Hourglass.vue'
 
 export default Vue.extend({
   name: 'Index',
   components: { Hourglass },
   layout: 'app',
+  middleware: [(ctx : Context) => {
+    if (!ctx.store.state.game) {
+      return ctx.redirect(('/games'))
+    }
+  }],
 
   data () {
     return {
