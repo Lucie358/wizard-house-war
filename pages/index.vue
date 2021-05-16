@@ -1,16 +1,16 @@
 <template>
   <div class="d-flex justify-center hourglasses">
     <div>
-      <Hourglass :points="gryffondorPoints" color="#890202" />
+      <Hourglass :points="gryffondorPoints" house="gryffondor" color="#890202" @addPoint="addPoint" @removePoint="removePoint" />
     </div>
     <div>
-      <Hourglass :points="poufsoufflePoints" color="#ECB938" />
+      <Hourglass :points="poufsoufflePoints" house="poufsouffle" color="#ECB938" @addPoint="addPoint" @removePoint="removePoint" />
     </div>
     <div>
-      <Hourglass :points="serdaiglePoints" color="#001C89" />
+      <Hourglass :points="serdaiglePoints" house="serdaigle" color="#001C89" @addPoint="addPoint" @removePoint="removePoint" />
     </div>
     <div>
-      <Hourglass :points="serpentardPoints" color="#1B6429" />
+      <Hourglass :points="serpentardPoints" house="serpentard" color="#1B6429" @addPoint="addPoint" @removePoint="removePoint" />
     </div>
   </div>
 </template>
@@ -26,25 +26,74 @@ export default Vue.extend({
 
   data () {
     return {
-      gryffondor: this.$store.state.game.gryffondor
+      gryffondorPoints: this.$store.state.game.years[this.$store.state.selectedYear].gryffondor,
+      serdaiglePoints: this.$store.state.game.years[this.$store.state.selectedYear].serdaigle,
+      poufsoufflePoints: this.$store.state.game.years[this.$store.state.selectedYear].poufsouffle,
+      serpentardPoints: this.$store.state.game.years[this.$store.state.selectedYear].serpentard
+
     }
   },
-  computed: {
-    gryffondorPoints () {
+
+  methods: {
+    async addPoint (house: string, point: number) {
       const selectedYear = this.$store.state.selectedYear
-      return this.$store.state.game.years[selectedYear].gryffondor
+      let currentPoint = 0
+      if (house === 'gryffondor') {
+        currentPoint = this.gryffondorPoints
+      } else if (house === 'serpentard') {
+        currentPoint = this.serpentardPoints
+      } else if (house === 'serdaigle') {
+        currentPoint = this.serdaiglePoints
+      } else if (house === 'poufsouffle') {
+        currentPoint = this.poufsoufflePoints
+      }
+      const newPoints = currentPoint + point
+
+      await this.$fire.firestore.collection('game').doc('mpTsEsfUgKydrIeQtyzt').update({
+        name: 'test',
+        ['years.year' + (selectedYear + 1) + '.' + [house]]: newPoints
+
+      }).then(() => {
+        if (house === 'gryffondor') {
+          this.gryffondorPoints = newPoints
+        } else if (house === 'serpentard') {
+          this.serpentardPoints = newPoints
+        } else if (house === 'serdaigle') {
+          this.serdaiglePoints = newPoints
+        } else if (house === 'poufsouffle') {
+          this.poufsoufflePoints = newPoints
+        }
+      })
     },
-    serdaiglePoints () {
+    async removePoint (house: string, point: number) {
       const selectedYear = this.$store.state.selectedYear
-      return this.$store.state.game.years[selectedYear].serdaigle
-    },
-    serpentardPoints () {
-      const selectedYear = this.$store.state.selectedYear
-      return this.$store.state.game.years[selectedYear].serpentard
-    },
-    poufsoufflePoints () {
-      const selectedYear = this.$store.state.selectedYear
-      return this.$store.state.game.years[selectedYear].poufsouffle
+      let currentPoint = 0
+      if (house === 'gryffondor') {
+        currentPoint = this.gryffondorPoints
+      } else if (house === 'serpentard') {
+        currentPoint = this.serpentardPoints
+      } else if (house === 'serdaigle') {
+        currentPoint = this.serdaiglePoints
+      } else if (house === 'poufsouffle') {
+        currentPoint = this.poufsoufflePoints
+      }
+      const newPoints = currentPoint - point
+
+      await this.$fire.firestore.collection('game').doc('mpTsEsfUgKydrIeQtyzt').update({
+        name: 'test',
+        ['years.year' + (selectedYear + 1) + '.' + [house]]: newPoints
+
+      }).then(() => {
+        if (house === 'gryffondor') {
+          this.gryffondorPoints = newPoints
+        } else if (house === 'serpentard') {
+          this.serpentardPoints = newPoints
+        } else if (house === 'serdaigle') {
+          this.serdaiglePoints = newPoints
+        } else if (house === 'poufsouffle') {
+          this.poufsoufflePoints = newPoints
+        }
+      })
     }
   }
 })

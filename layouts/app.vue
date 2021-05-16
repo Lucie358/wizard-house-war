@@ -1,29 +1,92 @@
 <template>
   <v-app v-if="$store.state.game">
-    <div>
-      <v-tabs
-        v-model="selectedYear"
-        background-color="transparent"
-        color="basil"
-        grow
-      >
-        <v-tab
+    <ParticlesJs>
+      <div>
+        <v-tabs
+          v-model="selectedYear"
+          background-color="transparent"
+          color="basil"
+          grow
+        >
+          <v-tab
+            v-for="year in $store.state.game.years"
+            :key="year.name"
+          >
+            {{ year.name }}
+          </v-tab>
+        </v-tabs>
+      </div>
+
+      <v-tabs-items v-model="selectedYear">
+        <v-tab-item
           v-for="year in $store.state.game.years"
           :key="year.name"
         >
-          {{ year.name }}
-        </v-tab>
-      </v-tabs>
-    </div>
-
-    <v-tabs-items v-model="selectedYear">
-      <v-tab-item
-        v-for="year in $store.state.game.years"
-        :key="year.name"
+          <nuxt />
+        </v-tab-item>
+      </v-tabs-items>
+      <v-speed-dial
+        v-model="fab"
+        bottom
+        right
+        absolute
+        scale
       >
-        <nuxt />
-      </v-tab-item>
-    </v-tabs-items>
+        <template #activator>
+          <v-avatar
+            v-model="fab"
+            :class="!fab ? 'hvr-bob' : ''"
+            dark
+            fab
+            size="60"
+          >
+            <v-icon v-if="fab">
+              mdi-close
+            </v-icon>
+            <img
+              v-else
+              src="../assets/images/icons/pot.svg"
+              alt="Baguette magique"
+            >
+          </v-avatar>
+        </template>
+        <v-tooltip left>
+          <template #activator="{ on, attrs }">
+            <v-avatar
+              dark
+              fab
+              size="50"
+              class="mt-4"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <img
+                src="../assets/images/icons/potion.svg"
+                alt="Deconnexion"
+              >
+            </v-avatar>
+          </template>
+          <span style="font-family:'Roboto' !important;">Deconnexion</span>
+        </v-tooltip>
+        <v-tooltip left>
+          <template #activator="{ on, attrs }">
+            <v-avatar
+              dark
+              fab
+              size="50"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <img
+                src="../assets/images/icons/crystal-ball.svg"
+                alt="Changer de partie"
+              >
+            </v-avatar>
+          </template>
+          <span style="font-family:'Roboto' !important;">Changer de partie</span>
+        </v-tooltip>
+      </v-speed-dial>
+    </ParticlesJs>
   </v-app>
 </template>
 
@@ -36,6 +99,16 @@ export default Vue.extend({
   middleware: ['auth'],
   data () {
     return {
+      direction: 'top',
+      fab: false,
+      fling: false,
+      hover: false,
+      tabs: null,
+      top: false,
+      right: true,
+      bottom: true,
+      left: false,
+      transition: 'slide-y-reverse-transition'
     }
   },
   computed: {
@@ -48,20 +121,18 @@ export default Vue.extend({
       }
     }
   },
-
-  // Recuperer directement toute la gane avec anneees etc...
-  mounted () {
-    this.getGames()
-  },
-  methods: {
-    async getGames () {
-      const gamesSnap = await this.$fire.firestore.collection('game').get()
-      const games = gamesSnap.docs.map(g => g.data()).map((game) => {
-        console.log(game)
-        game.years = orderBy(game.years, 'name')
-        return game
-      })
-      this.$store.commit('SET_GAME', games[0])
+  watch: {
+    top (val) {
+      this.bottom = !val
+    },
+    right (val) {
+      this.left = !val
+    },
+    bottom (val) {
+      this.top = !val
+    },
+    left (val) {
+      this.right = !val
     }
   }
 })
@@ -71,7 +142,4 @@ export default Vue.extend({
   #app {
     min-height: 100vh;
   }
-//   .v-window {
-//    min-height: 100vh;
-//  }
 </style>

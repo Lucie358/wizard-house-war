@@ -71,7 +71,8 @@ export default Vue.extend({
   name: 'Hourglass',
   props: {
     color: { type: String, default: '' },
-    points: { type: Number, default: 0 }
+    points: { type: Number, default: 0 },
+    house: { type: String, default: '' }
 
   },
   data: () => ({
@@ -89,12 +90,12 @@ export default Vue.extend({
   },
   methods: {
     addPoints () {
+      this.$emit('addPoint', this.house, this.pointsToAdd)
       this.addInput = false
-      this.pointsToAdd = 0
     },
     removePoints () {
+      this.$emit('removePoint', this.house, this.pointsToRemove)
       this.removeInput = false
-      this.pointsToRemove = 0
     }
   }
 

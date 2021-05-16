@@ -6,7 +6,9 @@ export interface Year {
 }
 
 export interface Game {
+  id:number
   name: string
+  description: string
   years: {
     year1: Year
     year2: Year
