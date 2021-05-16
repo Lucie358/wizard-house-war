@@ -9,8 +9,8 @@
           grow
         >
           <v-tab
-            v-for="year in $store.state.game.years"
-            :key="year.name"
+            v-for="year in $store.getters.selectedGameYearsSorted"
+            :key="year.id"
           >
             {{ year.name }}
           </v-tab>
@@ -19,8 +19,8 @@
 
       <v-tabs-items v-model="selectedYear">
         <v-tab-item
-          v-for="year in $store.state.game.years"
-          :key="year.name"
+          v-for="year in $store.getters.selectedGameYearsSorted"
+          :key="year.id"
         >
           <nuxt />
         </v-tab-item>
@@ -93,10 +93,27 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { orderBy } from 'lodash'
+import { Game } from 'interfaces/game'
+import { Context } from '@nuxt/types'
 
 export default Vue.extend({
   name: 'AppLayout',
-  middleware: ['auth'],
+  middleware: ['auth', async (ctx : Context) => {
+    if (!ctx.store.state.game) {
+      console.log(ctx.store.state.game)
+      const gameId = ctx.route.query.game as string
+      if (!gameId) {
+        return ctx.redirect('/')
+      }
+      const selectedGameSnap = await ctx.$fire.firestore.collection('game').doc(gameId).get()
+      if (!selectedGameSnap) {
+        return ctx.redirect('/')
+      }
+      const game = { ...selectedGameSnap.data(), id: selectedGameSnap.id }
+      await ctx.store.commit('SET_GAME', game as Game)
+    }
+  }],
   data () {
     return {
       direction: 'top',
