@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire" dark>
-      <v-content dark style="background:url(https://images.unsplash.com/photo-1539814858141-928517f6afd3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80);background-size:cover">
+      <v-content dark class="bg">
         <v-container
           fluid
           fill-height
@@ -14,10 +14,12 @@
               xs12
               sm8
               md4
+              text-center
             >
+              <h1>Wizard House War</h1>
               <v-card class="elevation-12" dark>
                 <v-toolbar
-                  color="red darken-3"
+                  color="pink darken-3"
                   dark
                   flat
                 >
@@ -30,7 +32,7 @@
                       label="Adresse e-mail"
                       name="email"
                       prepend-icon="mdi-at"
-                      color="red"
+                      color="white"
                       required
                       type="email"
                       counter
@@ -42,7 +44,7 @@
                       label="Mot de passe"
                       name="password"
                       prepend-icon="mdi-lock"
-                      color="red"
+                      color="white"
                       required
                       :type="showPwd ? 'text' : 'password'"
                       :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
@@ -52,7 +54,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer />
-                  <v-btn color="red darken-3" @click="submit">
+                  <v-btn color="pink darken-4" @click="submit">
                     Connexion
                   </v-btn>
                 </v-card-actions>
@@ -85,4 +87,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.bg{
+  background-image: url('../assets/images/background.jpeg');
+  background-size: cover;
+}
+</style>

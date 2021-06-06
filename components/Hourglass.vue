@@ -12,13 +12,11 @@
     <div class="text-center mt-2">
       <v-menu
         v-model="addInput"
-        :close-on-content-click="false"
-        :nudge-width="200"
         offset-y
       >
         <template #activator="{ on, attrs }">
           <v-btn
-            color="indigo"
+            :color="color"
             dark
             v-bind="attrs"
             v-on="on"
@@ -29,21 +27,23 @@
 
         <v-text-field
           v-model.number="pointsToAdd"
-          :append-outer-icon="addInput ? 'mdi-send' : ''"
+          class="mt-4"
+          clearable
+          type="number"
+          outlined
           label="Ajouter des points"
           autofocus
-          @click:append-outer="addPoints"
+          hide-details="auto"
+          @keydown.enter.exact.prevent="addPoints"
         />
       </v-menu>
       <v-menu
         v-model="removeInput"
-        :close-on-content-click="false"
-        :nudge-width="200"
         offset-y
       >
         <template #activator="{ on, attrs }">
           <v-btn
-            color="indigo"
+            :color="color"
             dark
             v-bind="attrs"
             v-on="on"
@@ -51,13 +51,16 @@
             -
           </v-btn>
         </template>
-
         <v-text-field
           v-model.number="pointsToRemove"
-          :append-outer-icon="removeInput ? 'mdi-send' : ''"
+          type="number"
+          class="mt-4"
+          clearable
           label="Enlever des points"
+          outlined
           autofocus
-          @click:append-outer="removePoints"
+          hide-details="auto"
+          @keydown.enter.exact.prevent="removePoints"
         />
       </v-menu>
     </div>
@@ -79,8 +82,8 @@ export default Vue.extend({
     addInput: false,
     removeInput: false,
     maxPoints: 1500,
-    pointsToAdd: 10,
-    pointsToRemove: 10
+    pointsToAdd: null,
+    pointsToRemove: null
 
   }),
   computed: {
@@ -92,10 +95,12 @@ export default Vue.extend({
     addPoints () {
       this.$emit('addPoint', this.house, this.pointsToAdd)
       this.addInput = false
+      this.pointsToAdd = null
     },
     removePoints () {
       this.$emit('removePoint', this.house, this.pointsToRemove)
       this.removeInput = false
+      this.pointsToRemove = null
     }
   }
 

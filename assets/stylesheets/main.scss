@@ -135,3 +135,27 @@ min-width: 200px !important;
   -webkit-animation-direction: normal, alternate;
   animation-direction: normal, alternate;
 }
+
+.v-dialog.v-dialog--active{
+  background-color:#383838b3;
+  padding: 10px;
+}
+input, textarea{
+  font-family: 'Roboto' !important;
+}
+.v-label{
+  font-family: "Roboto";
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

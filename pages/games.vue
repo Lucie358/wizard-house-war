@@ -17,18 +17,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Context } from '@nuxt/types'
 import Hourglass from '~/components/Hourglass.vue'
 
 export default Vue.extend({
   name: 'Games',
   components: { Hourglass },
   layout: 'app',
-  // middleware: [(ctx : Context) => {
-  //   if (!ctx.store.state.game) {
-  //     return ctx.redirect(('/'))
-  //   }
-  // }],
 
   data () {
     return {
@@ -53,11 +47,8 @@ export default Vue.extend({
         currentPoint = this.poufsoufflePoints
       }
       const newPoints = currentPoint + point
-
-      await this.$fire.firestore.collection('game').doc('mpTsEsfUgKydrIeQtyzt').update({
-        name: 'test',
+      await this.$fire.firestore.collection('games').doc(this.$store.state.game.id).update({
         ['years.year' + (selectedYear + 1) + '.' + [house]]: newPoints
-
       }).then(() => {
         if (house === 'gryffondor') {
           this.gryffondorPoints = newPoints
@@ -84,8 +75,7 @@ export default Vue.extend({
       }
       const newPoints = currentPoint - point
 
-      await this.$fire.firestore.collection('game').doc('mpTsEsfUgKydrIeQtyzt').update({
-        name: 'test',
+      await this.$fire.firestore.collection('games').doc(this.$store.state.game.id).update({
         ['years.year' + (selectedYear + 1) + '.' + [house]]: newPoints
 
       }).then(() => {

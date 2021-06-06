@@ -71,7 +71,7 @@ export default {
       themes: {
         dark: {
           primary: {
-            base: '#9B20F0',
+            base: '#E5EEFF',
             lighten1: '#96BCFF',
             lighten2: '#E5EEFF'
           },

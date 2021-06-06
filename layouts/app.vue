@@ -59,6 +59,7 @@
               class="mt-4"
               v-bind="attrs"
               v-on="on"
+              @click="logout()"
             >
               <img
                 src="../assets/images/icons/potion.svg"
@@ -76,7 +77,7 @@
               size="50"
               v-bind="attrs"
               v-on="on"
-              @click="redirect('games')"
+              @click="redirect()"
             >
               <img
                 src="../assets/images/icons/crystal-ball.svg"
@@ -93,7 +94,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { orderBy } from 'lodash'
 import { Game } from 'interfaces/game'
 import { Context } from '@nuxt/types'
 
@@ -101,13 +101,12 @@ export default Vue.extend({
   name: 'AppLayout',
   middleware: ['auth', async (ctx : Context) => {
     if (!ctx.store.state.game) {
-      console.log(ctx.store.state.game)
       const gameId = ctx.route.query.game as string
       if (!gameId) {
         return ctx.redirect('/')
       }
-      const selectedGameSnap = await ctx.$fire.firestore.collection('game').doc(gameId).get()
-      if (!selectedGameSnap) {
+      const selectedGameSnap = await ctx.$fire.firestore.collection('games').doc(gameId).get()
+      if (!selectedGameSnap.data()) {
         return ctx.redirect('/')
       }
       const game = { ...selectedGameSnap.data(), id: selectedGameSnap.id }
@@ -158,8 +157,15 @@ export default Vue.extend({
     }
   },
   methods: {
-    redirect (route: string) {
-      this.$router.push(route)
+    redirect () {
+      this.$router.push('/')
+    },
+    logout () {
+      this.$fire.auth.signOut().then(() => {
+        this.$router.push('/login')
+      }).catch((error) => {
+        console.error(error)
+      })
     }
   }
 })
